@@ -4,7 +4,7 @@ public class Request {
     private String name;
     private String value;
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
@@ -12,7 +12,11 @@ public class Request {
         this.name = name;
     }
 
-    public String getValue() {
+    String getValue() {
         return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

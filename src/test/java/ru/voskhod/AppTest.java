@@ -32,32 +32,32 @@ public class AppTest
         }
     }
 
-    @Test
-    public void readRequestBodyFromJson() throws JsonProcessingException {
-        String json = """
-            [
-                {
-                "name": "A1",
-                "value": "7"
-                },
-                {
-                "name": "B1",
-                "value": "A1-1"
-                },
-                {
-                "name": "A2",
-                "value": "A1+B1"
-                },
-                {
-                "name": "B2",
-                "value": "A2-1"
-                }
-            ]
-            """;
-
-        ObjectMapper mapper = new ObjectMapper();
-        Request[] cells = mapper.readValue(json, Request[].class);
-        System.out.println("Finished");
-    }
+//    @Test
+//    public void readRequestBodyFromJson() throws JsonProcessingException {
+//        String json = """
+//            [
+//                {
+//                "name": "A1",
+//                "value": "7"
+//                },
+//                {
+//                "name": "B1",
+//                "value": "A1-1"
+//                },
+//                {
+//                "name": "A2",
+//                "value": "A1+B1"
+//                },
+//                {
+//                "name": "B2",
+//                "value": "A2-1"
+//                }
+//            ]
+//            """;
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        Request[] cells = mapper.readValue(json, Request[].class);
+//        System.out.println("Finished");
+//    }
 
 }
