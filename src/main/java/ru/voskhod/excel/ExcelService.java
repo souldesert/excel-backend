@@ -1,10 +1,13 @@
 package ru.voskhod.excel;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.function.BiFunction;
 
 public class ExcelService {
     private static final int maxIterations = 50;
+    private static final int precision = 10;
 
     private static final Map<String, Integer> operations = new HashMap<>() {{
         put("(", 0);
@@ -15,11 +18,11 @@ public class ExcelService {
         put("/", 2);
     }};
 
-    private static final Map<String, BiFunction<Double, Double, Double>> functions = new HashMap<>() {{
-        put("-", (a, b) -> a - b);
-        put("+", (a, b) -> a + b);
-        put("*", (a, b) -> a * b);
-        put("/", (a, b) -> a / b);
+    private static final Map<String, BiFunction<BigDecimal, BigDecimal, BigDecimal>> functions = new HashMap<>() {{
+        put("-", BigDecimal::subtract);
+        put("+", BigDecimal::add);
+        put("*", BigDecimal::multiply);
+        put("/", (a, b) -> a.divide(b, precision, RoundingMode.CEILING).stripTrailingZeros());
     }};
 
     private static TokenizeResult tokenize(String expr) throws Exception {
@@ -154,9 +157,13 @@ public class ExcelService {
             for (String token : expr) {
                 if (functions.containsKey(token)) {
 
-                    Double opLeft = Double.valueOf(expr.get(expr.indexOf(token) - 2));
-                    Double opRight = Double.valueOf(expr.get(expr.indexOf(token) - 1));
-                    Double result = functions.get(token).apply(opLeft, opRight);
+//                    Double opLeft = Double.valueOf(expr.get(expr.indexOf(token) - 2));
+//                    Double opRight = Double.valueOf(expr.get(expr.indexOf(token) - 1));
+//                    Double result = functions.get(token).apply(opLeft, opRight);
+
+                    BigDecimal opLeft = new BigDecimal(expr.get(expr.indexOf(token) - 2));
+                    BigDecimal opRight = new BigDecimal(expr.get(expr.indexOf(token) - 1));
+                    BigDecimal result = functions.get(token).apply(opLeft, opRight);
 
                     // Удаляем операнды и операцию из массива
                     expr.remove(0);
@@ -292,7 +299,7 @@ public class ExcelService {
 
     private static void packResults(Map<String, ResultCell> result, String cellName, Cell cell) {
         if (cell.getStatus() == Status.DONE) {
-            ResultCell resultCell = new ResultCell(cell.getStatus(), Double.parseDouble(cell.getResult()));
+            ResultCell resultCell = new ResultCell(cell.getStatus(), new BigDecimal(cell.getResult()));
             result.put(cellName, resultCell);
         } else {
             ResultCell resultCell = new ResultCell(cell.getStatus(), cell.getErrorMsg());
