@@ -1,14 +1,14 @@
 package ru.voskhod.excel;
 
+import java.math.BigDecimal;
+
 public class ResultCell {
     private Status status;
     private String value;
 
-    ResultCell(Status status, double value) {
+    ResultCell(Status status, BigDecimal value) {
         this.status = status;
-
-        int valueInt = (int) value;
-        this.value = (value == valueInt) ? String.valueOf(valueInt) : String.valueOf(value);
+        this.value = value.toString();
     }
 
     ResultCell(Status status, String errorMsg) {
