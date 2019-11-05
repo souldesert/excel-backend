@@ -22,11 +22,6 @@ public class ExcelService {
         put("/", (a, b) -> a / b);
     }};
 
-    // TODO вынести на фронт
-    private static String normalize(String expr) {
-        return expr.replaceAll("/\\s/g", "");
-    }
-
     private static TokenizeResult tokenize(String expr) throws Exception {
         ArrayList<Integer> refs = new ArrayList<>();
         ArrayList<String> tokens = new ArrayList<>();
