@@ -40,7 +40,7 @@ public class ExcelService {
 
                     // если операнд -  не число а ссылка, сохраняем ссылку
                     try {
-                        Double.parseDouble(token);
+                        new BigDecimal(token);
                     } catch (NumberFormatException e) {
                         refs.add(tokens.size() - 1);
                     }
@@ -95,7 +95,7 @@ public class ExcelService {
             tokens.add(token);
 
             try {
-                Double.parseDouble(token);
+                new BigDecimal(token);
             } catch (NumberFormatException e) {
                 refs.add(tokens.size() - 1);
             }
@@ -156,10 +156,6 @@ public class ExcelService {
         do {
             for (String token : expr) {
                 if (functions.containsKey(token)) {
-
-//                    Double opLeft = Double.valueOf(expr.get(expr.indexOf(token) - 2));
-//                    Double opRight = Double.valueOf(expr.get(expr.indexOf(token) - 1));
-//                    Double result = functions.get(token).apply(opLeft, opRight);
 
                     BigDecimal opLeft = new BigDecimal(expr.get(expr.indexOf(token) - 2));
                     BigDecimal opRight = new BigDecimal(expr.get(expr.indexOf(token) - 1));
